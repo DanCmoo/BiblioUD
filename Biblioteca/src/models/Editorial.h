@@ -2,6 +2,7 @@
 #define EDITORIAL_H
 
 #include <string>
+#include <sstream>
 
 class Editorial {
 private:
@@ -22,7 +23,21 @@ public:
     const std::string& getCiudad() const { return ciudad; }
     const std::string& getPais() const { return pais; }
 
-    void mostrar() const;
+    void mostrar();
+
+    // SERIALIZACION
+    std::string serialize() const {
+        return idEditorial + "|" + nombre + "|" + ciudad + "|" + pais;
+    }
+
+    // DESERIALIZACION
+    void deserialize(const std::string& linea) {
+        std::istringstream iss(linea);
+        std::getline(iss, idEditorial, '|');
+        std::getline(iss, nombre, '|');
+        std::getline(iss, ciudad, '|');
+        std::getline(iss, pais, '|');
+    }
 };
 
 #endif

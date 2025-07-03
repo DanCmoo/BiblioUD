@@ -1,4 +1,4 @@
-# Install script for directory: D:/Universidad XD/Programas/Biblioteca
+# Install script for directory: D:/Universidad XD/Programas/BiblioUD/Biblioteca
 
 # Set the install prefix
 if(NOT DEFINED CMAKE_INSTALL_PREFIX)
@@ -45,5 +45,5 @@ endif()
 
 string(REPLACE ";" "\n" CMAKE_INSTALL_MANIFEST_CONTENT
        "${CMAKE_INSTALL_MANIFEST_FILES}")
-file(WRITE "D:/Universidad XD/Programas/Biblioteca/cmake-build-debug/${CMAKE_INSTALL_MANIFEST}"
+file(WRITE "D:/Universidad XD/Programas/BiblioUD/Biblioteca/cmake-build-debug/${CMAKE_INSTALL_MANIFEST}"
      "${CMAKE_INSTALL_MANIFEST_CONTENT}")

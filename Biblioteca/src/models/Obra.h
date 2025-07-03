@@ -2,8 +2,9 @@
 #define OBRA_H
 
 #include <string>
+#include <sstream>
 #include "Edicion.h"
-#include "Lista.h"  // Lista<T>
+#include "../datastructures/Lista.h"  // Lista<T>
 
 class Obra {
 private:
@@ -30,7 +31,42 @@ public:
         return ediciones;
     }
 
-    void mostrar() const;
+    void mostrar();
+
+    // SERIALIZACION: solo serializa los datos base y los números de edición separados por ';'
+    std::string serialize() const {
+        std::ostringstream oss;
+        oss << nombreObra << "|" << tipoPoesia << "|" << idAutor << "|";
+        bool primero = true;
+        for (auto it = ediciones.begin(); it != ediciones.end(); ++it) {
+            if (!primero) oss << ";";
+            oss << (*it).getNumeroEdicion();
+            primero = false;
+        }
+        return oss.str();
+    }
+
+    // DESERIALIZACION: solo recupera los datos base y los números de edición (los datos completos de cada Edicion se cargan aparte)
+    void deserialize(const std::string& linea) {
+        std::istringstream iss(linea);
+        std::string campo, edicionesStr;
+        std::getline(iss, nombreObra, '|');
+        std::getline(iss, tipoPoesia, '|');
+        std::getline(iss, idAutor, '|');
+        std::getline(iss, edicionesStr, '|');
+
+        // Limpiar la lista antes de poblarla
+        ediciones.limpiar();
+        if (!edicionesStr.empty()) {
+            std::istringstream eds(edicionesStr);
+            while (std::getline(eds, campo, ';')) {
+                int numEdicion = std::stoi(campo);
+                Edicion ed;
+                ed.setNumeroEdicion(numEdicion);
+                ediciones.agregar(ed);
+            }
+        }
+    }
 };
 
 #endif

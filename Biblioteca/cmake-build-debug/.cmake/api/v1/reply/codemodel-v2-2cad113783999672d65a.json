@@ -49,8 +49,8 @@
 	"kind" : "codemodel",
 	"paths" : 
 	{
-		"build" : "D:/Universidad XD/Programas/Biblioteca/cmake-build-debug",
-		"source" : "D:/Universidad XD/Programas/Biblioteca"
+		"build" : "D:/Universidad XD/Programas/BiblioUD/Biblioteca/cmake-build-debug",
+		"source" : "D:/Universidad XD/Programas/BiblioUD/Biblioteca"
 	},
 	"version" : 
 	{

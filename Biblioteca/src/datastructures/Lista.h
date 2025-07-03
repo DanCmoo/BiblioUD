@@ -82,8 +82,8 @@ public:
         T& operator*() { return nodo->dato; }
     };
 
-    iterator begin() { return iterator(cabeza); }
-    iterator end() { return iterator(nullptr); }
+    iterator begin() const{ return iterator(cabeza); }
+    iterator end() const{ return iterator(nullptr); }
 };
 
 #endif

@@ -1,0 +1,1 @@
+idEditorial|nombre|ciudad|pais

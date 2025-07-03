@@ -1,0 +1,1 @@
+idObra|nombreObra|tipoPoesia|idAutor|listadoIdEdiciones

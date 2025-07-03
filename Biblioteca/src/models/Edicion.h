@@ -2,6 +2,7 @@
 #define EDICION_H
 
 #include <string>
+#include <sstream>
 
 class Edicion {
 private:
@@ -24,13 +25,30 @@ public:
     const std::string& getIdEditorial() const { return idEditorial; }
     const std::string& getCiudadPublicacion() const { return ciudadPublicacion; }
 
-    // Setters opcionales
     void setNumeroEdicion(int num) { numeroEdicion = num; }
     void setFechaPublicacion(const std::string& fecha) { fechaPublicacion = fecha; }
     void setIdEditorial(const std::string& idEdit) { idEditorial = idEdit; }
     void setCiudadPublicacion(const std::string& ciudad) { ciudadPublicacion = ciudad; }
 
-    void mostrar() const;
+    void mostrar();
+
+    // SERIALIZACION
+    std::string serialize() const {
+        return std::to_string(numeroEdicion) + "|" +
+               fechaPublicacion + "|" +
+               idEditorial + "|" +
+               ciudadPublicacion;
+    }
+
+    // DESERIALIZACION
+    void deserialize(const std::string& linea) {
+        std::istringstream iss(linea);
+        std::string campo;
+        std::getline(iss, campo, '|'); numeroEdicion = std::stoi(campo);
+        std::getline(iss, fechaPublicacion, '|');
+        std::getline(iss, idEditorial, '|');
+        std::getline(iss, ciudadPublicacion, '|');
+    }
 };
 
 #endif
