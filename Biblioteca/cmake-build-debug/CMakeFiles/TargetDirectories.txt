@@ -1,0 +1,3 @@
+D:/Universidad XD/Programas/Biblioteca/cmake-build-debug/CMakeFiles/Biblioteca.dir
+D:/Universidad XD/Programas/Biblioteca/cmake-build-debug/CMakeFiles/edit_cache.dir
+D:/Universidad XD/Programas/Biblioteca/cmake-build-debug/CMakeFiles/rebuild_cache.dir

@@ -1,0 +1,4 @@
+A01,Julio,Cortázar,M,1914-08-26,Bruselas,Bélgica,París,literatura,1935,1949
+A02,Pablo,Neruda,M,1904-07-12,Parral,Chile,Santiago,literatura,1920,1923
+A03,Gloria,Fuentes,F,1927-07-28,Madrid,España,Madrid,literatura,1942,1945
+A04,Gabriel Garcia Marquez, ,M,1927-03-06,Aracataca,Colombia,Bogota,Periodismo,1947,1955
