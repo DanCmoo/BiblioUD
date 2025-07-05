@@ -1,0 +1,1 @@
+idAutor|nombre|apellido|sexo|fechaNacimiento|ciudadNacimiento|paisNacimiento|ciudadResidencia|formacionBase|anioInicio|anioPrimeraObra

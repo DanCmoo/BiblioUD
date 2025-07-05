@@ -1,0 +1,5 @@
+E01|Alfaguara|Madrid|España
+E02|Seix Barral|Barcelona|España
+E03|Editorial Planeta|Bogotá|Colombia
+E04|Fondo de Cultura Económica|México DF|México
+E05|Lumen|Buenos Aires|Argentina

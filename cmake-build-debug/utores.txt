@@ -1,0 +1,7 @@
+A01|Julio|Cortázar|M|1914-08-26|Bruselas|Bélgica|París|literatura|1935|1949
+A02|Pablo|Neruda|M|1904-07-12|Parral|Chile|Santiago|literatura|1920|1923
+A03|Gloria|Fuentes|F|1927-07-28|Madrid|España|Madrid|literatura|1942|1945
+A04|Mario|Benedetti|M|1920-09-14|Paso de los Toros|Uruguay|Montevideo|filosofía|1939|1945
+A05|Alfonsina|Storni|F|1892-05-29|Sala Capriasca|Suiza|Buenos Aires|literatura|1911|1916
+A06|Gabriela|Mistral|F|1889-04-07|Vicuña|Chile|Los Andes|literatura|1910|1914
+A07|Octavio|Paz|M|1914-03-31|Ciudad de México|México|Ciudad de México|literatura|1931|1937

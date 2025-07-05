@@ -1,0 +1,2 @@
+O01|Rayuela|novela|A01|1|1963-06-28|E01|Buenos Aires|2|1984-09-15|E02|Madrid
+O02|Veinte poemas|poesía|A02|1|1924-01-01|E03|Santiago
