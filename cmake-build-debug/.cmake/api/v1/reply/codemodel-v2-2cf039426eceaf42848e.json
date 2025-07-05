@@ -39,7 +39,7 @@
 				{
 					"directoryIndex" : 0,
 					"id" : "Biblioteca::@6890427a1f51a3e7e1df",
-					"jsonFile" : "target-Biblioteca-Debug-ae1062a3c2e6e0159a5b.json",
+					"jsonFile" : "target-Biblioteca-Debug-30c583fecbbaf0c021a5.json",
 					"name" : "Biblioteca",
 					"projectIndex" : 0
 				}
@@ -49,12 +49,12 @@
 	"kind" : "codemodel",
 	"paths" : 
 	{
-		"build" : "C:/Users/nedic/Downloads/BiblioUD-dev/Biblioteca/cmake-build-debug",
-		"source" : "C:/Users/nedic/Downloads/BiblioUD-dev/Biblioteca"
+		"build" : "D:/Universidad XD/Programas/BiblioUD/cmake-build-debug",
+		"source" : "D:/Universidad XD/Programas/BiblioUD"
 	},
 	"version" : 
 	{
 		"major" : 2,
-		"minor" : 7
+		"minor" : 6
 	}
 }

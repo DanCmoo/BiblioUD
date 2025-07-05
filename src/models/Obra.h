@@ -3,72 +3,66 @@
 
 #include <string>
 #include <sstream>
-#include "Edicion.h"
 #include "../datastructures/Lista.h"  // Lista<T>
 
 class Obra {
 private:
     std::string nombreObra;
     std::string tipoPoesia;
-    std::string idAutor;
-    Lista<Edicion> ediciones; // Estructura genérica
+    int idAutor;
+    Lista<int> idEdiciones; // Ahora solo almacena los IDs de las ediciones
 
 public:
-    Obra() : nombreObra(""), tipoPoesia(""), idAutor("") {}
+    Obra() : nombreObra(""), tipoPoesia(""), idAutor(0) {}
 
-    Obra(const std::string& nombre, const std::string& tipo, const std::string& id)
+    Obra(const std::string& nombre, const std::string& tipo, const int& id)
         : nombreObra(nombre), tipoPoesia(tipo), idAutor(id) {}
 
     const std::string& getNombre() const { return nombreObra; }
+    void setNombre(const std::string& n){nombreObra = n; }
     const std::string& getTipoPoesia() const { return tipoPoesia; }
-    const std::string& getIdAutor() const { return idAutor; }
+    void setTipoPoesia(const std::string& p){tipoPoesia = p; }
+    const int& getIdAutor() const { return idAutor; }
 
-    void agregarEdicion(const Edicion& e) {
-        ediciones.agregar(e); // Metodo de tu Lista<T>
+    void agregarIdEdicion(int idEdicion) {
+        idEdiciones.agregar(idEdicion);
     }
 
-    const Lista<Edicion>& getEdiciones() const {
-        return ediciones;
+    const Lista<int>& getIdEdiciones() const {
+        return idEdiciones;
     }
-
-    //Setters
-    void setNombre(const std::string& nombre) { nombreObra = nombre; }
-    void setTipoPoesia(const std::string& tipo) { tipoPoesia = tipo; }
-    void setIdAutor(const std::string& id) { idAutor = id; }
 
     void mostrar();
 
-    // SERIALIZACION: solo serializa los datos base y los números de edición separados por ';'
+    // SERIALIZACION: solo serializa los datos base y los IDs de ediciones separados por ';'
     std::string serialize() const {
         std::ostringstream oss;
         oss << nombreObra << "|" << tipoPoesia << "|" << idAutor << "|";
         bool primero = true;
-        for (auto it = ediciones.begin(); it != ediciones.end(); ++it) {
+        for (auto it = idEdiciones.begin(); it != idEdiciones.end(); ++it) {
             if (!primero) oss << ";";
-            oss << (*it).getNumeroEdicion();
+            oss << *it;
             primero = false;
         }
         return oss.str();
     }
 
-    // DESERIALIZACION: solo recupera los datos base y los números de edición (los datos completos de cada Edicion se cargan aparte)
+    // DESERIALIZACION: solo recupera los datos base y los IDs de ediciones
     void deserialize(const std::string& linea) {
         std::istringstream iss(linea);
-        std::string campo, edicionesStr;
+        std::string campo, idEdicionesStr;
         std::getline(iss, nombreObra, '|');
         std::getline(iss, tipoPoesia, '|');
-        std::getline(iss, idAutor, '|');
-        std::getline(iss, edicionesStr, '|');
+        std::getline(iss, campo, '|'); idAutor = std::stoi(campo);
+        std::getline(iss, idEdicionesStr, '|');
 
         // Limpiar la lista antes de poblarla
-        ediciones.limpiar();
-        if (!edicionesStr.empty()) {
-            std::istringstream eds(edicionesStr);
+        idEdiciones.limpiar();
+        if (!idEdicionesStr.empty()) {
+            std::istringstream eds(idEdicionesStr);
             while (std::getline(eds, campo, ';')) {
-                int numEdicion = std::stoi(campo);
-                Edicion ed;
-                ed.setNumeroEdicion(numEdicion);
-                ediciones.agregar(ed);
+                int idEdicion = std::stoi(campo);
+                idEdiciones.agregar(idEdicion);
             }
         }
     }

@@ -18,17 +18,13 @@ public:
     Editorial(const std::string& id, const std::string& nom, const std::string& ciu, const std::string& pa)
         : idEditorial(id), nombre(nom), ciudad(ciu), pais(pa) {}
 
-    //getters
     const std::string& getIdEditorial() const { return idEditorial; }
     const std::string& getNombre() const { return nombre; }
+    void setNombre(const std::string& n){ nombre=  n; }
     const std::string& getCiudad() const { return ciudad; }
+    void setCiudad(const std::string& c){ ciudad=  c; }
     const std::string& getPais() const { return pais; }
-
-    //Setters
-    void setIdEditorial(const std::string& id) { idEditorial = id; }
-    void setNombre(const std::string& nom) { nombre = nom; }
-    void setCiudad(const std::string& ciu) { ciudad = ciu; }
-    void setPais(const std::string& pa) { pais = pa; }
+    void setPais(const std::string& p){ pais=  p; }
 
     void mostrar();
 

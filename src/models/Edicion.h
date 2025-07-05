@@ -3,51 +3,52 @@
 
 #include <string>
 #include <sstream>
-using namespace std;
+
 class Edicion {
 private:
     int numeroEdicion;
-    string fechaPublicacion;
-    string idEditorial;
-    string ciudadPublicacion;
+    std::string fechaPublicacion;
+    std::string idEditorial;
+    std::string ciudadPublicacion;
 
 public:
+    static int numEdicion;
     Edicion()
         : numeroEdicion(0), fechaPublicacion(""),
           idEditorial(""), ciudadPublicacion("") {}
 
-    Edicion(int num, const string& fecha, const string& idEdit, const string& ciudad)
-        : numeroEdicion(num), fechaPublicacion(fecha),
+    Edicion(const std::string& fecha, const std::string& idEdit, const std::string& ciudad)
+        : numeroEdicion(++numEdicion), fechaPublicacion(fecha),
           idEditorial(idEdit), ciudadPublicacion(ciudad) {}
 
     int getNumeroEdicion() const { return numeroEdicion; }
-    const string& getFechaPublicacion() const { return fechaPublicacion; }
-    const string& getIdEditorial() const { return idEditorial; }
-    const string& getCiudadPublicacion() const { return ciudadPublicacion; }
+    const std::string& getFechaPublicacion() const { return fechaPublicacion; }
+    const std::string& getIdEditorial() const { return idEditorial; }
+    const std::string& getCiudadPublicacion() const { return ciudadPublicacion; }
 
     void setNumeroEdicion(int num) { numeroEdicion = num; }
-    void setFechaPublicacion(const string& fecha) { fechaPublicacion = fecha; }
-    void setIdEditorial(const string& idEdit) { idEditorial = idEdit; }
-    void setCiudadPublicacion(const string& ciudad) { ciudadPublicacion = ciudad; }
+    void setFechaPublicacion(const std::string& fecha) { fechaPublicacion = fecha; }
+    void setIdEditorial(const std::string& idEdit) { idEditorial = idEdit; }
+    void setCiudadPublicacion(const std::string& ciudad) { ciudadPublicacion = ciudad; }
 
     void mostrar() const;
 
     // SERIALIZACION
-    string serialize() const {
-        return to_string(numeroEdicion) + "|" +
+    std::string serialize() const {
+        return std::to_string(numeroEdicion) + "|" +
                fechaPublicacion + "|" +
                idEditorial + "|" +
                ciudadPublicacion;
     }
 
     // DESERIALIZACION
-    void deserialize(const string& linea) {
-        istringstream iss(linea);
-        string campo;
-        getline(iss, campo, '|'); numeroEdicion = stoi(campo);
-        getline(iss, fechaPublicacion, '|');
-        getline(iss, idEditorial, '|');
-        getline(iss, ciudadPublicacion, '|');
+    void deserialize(const std::string& linea) {
+        std::istringstream iss(linea);
+        std::string campo;
+        std::getline(iss, campo, '|'); numeroEdicion = std::stoi(campo);
+        std::getline(iss, fechaPublicacion, '|');
+        std::getline(iss, idEditorial, '|');
+        std::getline(iss, ciudadPublicacion, '|');
     }
 };
 

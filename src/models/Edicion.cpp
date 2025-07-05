@@ -2,7 +2,9 @@
 #include <iostream>
 using namespace std;
 
+int Edicion::numEdicion = 0;
+
 void Edicion::mostrar() const {
-    cout << "Edición " << numeroEdicion << " | Fecha: " << fechaPublicacion
+    cout << "Edicion " << numeroEdicion << " | Fecha: " << fechaPublicacion
          << " | Editorial: " << idEditorial << " | Ciudad: " << ciudadPublicacion << endl;
 }

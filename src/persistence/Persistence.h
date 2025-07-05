@@ -35,10 +35,15 @@ public:
 
         std::string line;
         while (std::getline(file, line)) {
-            if (line.empty()) continue;
-            T obj;
-            obj.deserialize(line);
-            elementos.agregar(obj);
+            if (line.empty()) break; // Detiene la lectura si encuentra una línea vacía
+            try {
+                T obj;
+                obj.deserialize(line);
+                elementos.agregar(obj);
+            } catch (const std::exception& ex) {
+                // Si quieres, puedes loggear el error aquí
+                continue;
+            }
         }
         file.close();
         return elementos;
