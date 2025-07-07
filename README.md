@@ -85,9 +85,9 @@ Los archivos ubicados en `src/data/` almacenan la información de cada entidad e
 - **ediciones.txt**  
   Cada línea representa una edición de una obra:
   ```
-  numeroEdicion|fechaPublicacion|idEditorial|ciudadPublicacion
+  numeroEdicion|fechaPublicacion|idEditorial|ciudadPublicacion|nombreObra|idAutor
   ```
-  - Ejemplo: `1|1967-05-30|1|Buenos Aires`
+  - Ejemplo: `1|1967-05-30|1|Buenos Aires|Cien Años de Soledad|1`
 
 - **obras.txt**  
   Cada línea representa una obra y almacena los IDs de las ediciones asociadas separados por `;`:
