@@ -8,9 +8,10 @@ set(CMAKE_DEPENDS_LANGUAGES
 
 # The set of dependency files which are needed:
 set(CMAKE_DEPENDS_DEPENDENCY_FILES
-  "D:/Universidad XD/Programas/BiblioUD/src/main.cpp" "CMakeFiles/Biblioteca.dir/src/main.cpp.obj" "gcc" "CMakeFiles/Biblioteca.dir/src/main.cpp.obj.d"
-  "D:/Universidad XD/Programas/BiblioUD/src/models/Autor.cpp" "CMakeFiles/Biblioteca.dir/src/models/Autor.cpp.obj" "gcc" "CMakeFiles/Biblioteca.dir/src/models/Autor.cpp.obj.d"
-  "D:/Universidad XD/Programas/BiblioUD/src/models/Edicion.cpp" "CMakeFiles/Biblioteca.dir/src/models/Edicion.cpp.obj" "gcc" "CMakeFiles/Biblioteca.dir/src/models/Edicion.cpp.obj.d"
+  "C:/Users/userm/CLionProjects/BiblioUD/src/main.cpp" "CMakeFiles/Biblioteca.dir/src/main.cpp.obj" "gcc" "CMakeFiles/Biblioteca.dir/src/main.cpp.obj.d"
+  "C:/Users/userm/CLionProjects/BiblioUD/src/models/Autor.cpp" "CMakeFiles/Biblioteca.dir/src/models/Autor.cpp.obj" "gcc" "CMakeFiles/Biblioteca.dir/src/models/Autor.cpp.obj.d"
+  "C:/Users/userm/CLionProjects/BiblioUD/src/models/Edicion.cpp" "CMakeFiles/Biblioteca.dir/src/models/Edicion.cpp.obj" "gcc" "CMakeFiles/Biblioteca.dir/src/models/Edicion.cpp.obj.d"
+  "C:/Users/userm/CLionProjects/BiblioUD/src/models/Editorial.cpp" "CMakeFiles/Biblioteca.dir/src/models/Editorial.cpp.obj" "gcc" "CMakeFiles/Biblioteca.dir/src/models/Editorial.cpp.obj.d"
   )
 
 # Targets to which this target links which contain Fortran sources.

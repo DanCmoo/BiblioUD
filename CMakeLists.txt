@@ -8,5 +8,6 @@ add_executable(Biblioteca
         src/main.cpp
         src/models/Autor.cpp
         src/models/Edicion.cpp
+        src/models/Editorial.cpp
 )
 

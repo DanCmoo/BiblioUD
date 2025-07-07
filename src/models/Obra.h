@@ -10,7 +10,7 @@ private:
     std::string nombreObra;
     std::string tipoPoesia;
     int idAutor;
-    Lista<int> idEdiciones; // Ahora solo almacena los IDs de las ediciones
+    Lista<int> idEdiciones;
 
 public:
     Obra() : nombreObra(""), tipoPoesia(""), idAutor(0) {}
@@ -26,6 +26,14 @@ public:
 
     void agregarIdEdicion(int idEdicion) {
         idEdiciones.agregar(idEdicion);
+    }
+    void eliminarIdEdicion(int idEdicion) {
+        for (auto it = idEdiciones.begin(); it != idEdiciones.end(); ++it) {
+            if (*it == idEdicion) {
+                idEdiciones.eliminar(it);
+                return;
+            }
+        }
     }
 
     const Lista<int>& getIdEdiciones() const {

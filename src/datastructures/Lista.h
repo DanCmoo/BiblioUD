@@ -129,7 +129,7 @@ public:
     iterator begin() const { return iterator(cabeza); }
     iterator end() const { return iterator(nullptr); }
 
-    // ✅ Método eliminar por iterador
+    //
     void eliminar(iterator it) {
         if (it.nodo == nullptr || cabeza == nullptr)
             return;
@@ -156,6 +156,7 @@ public:
         delete actual;
         cantidad--;
     }
+
 };
 
 #endif

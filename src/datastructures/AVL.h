@@ -92,8 +92,6 @@ private:
         return &(nodo->dato);
     }
 
-
-
     void inorden(Nodo* nodo, std::function<void(const T&)> f) const {
         if (!nodo) return;
         inorden(nodo->izq, f);
@@ -108,6 +106,67 @@ private:
         delete nodo;
     }
 
+    // Función auxiliar para encontrar el nodo con el valor mínimo
+    Nodo* minimo(Nodo* nodo) {
+        Nodo* actual = nodo;
+        while (actual && actual->izq)
+            actual = actual->izq;
+        return actual;
+    }
+
+    // Función interna para eliminar un nodo
+    Nodo* eliminar(Nodo* nodo, const T& valor) {
+        if (!nodo) return nullptr;
+
+        if (comp(valor, nodo->dato)) {
+            nodo->izq = eliminar(nodo->izq, valor);
+        } else if (comp(nodo->dato, valor)) {
+            nodo->der = eliminar(nodo->der, valor);
+        } else {
+            // Nodo encontrado
+            cantidad--;
+            if (!nodo->izq || !nodo->der) {
+                Nodo* temp = nodo->izq ? nodo->izq : nodo->der;
+                if (!temp) {
+                    temp = nodo;
+                    nodo = nullptr;
+                } else {
+                    *nodo = *temp;
+                }
+                delete temp;
+            } else {
+                Nodo* temp = minimo(nodo->der);
+                nodo->dato = temp->dato;
+                nodo->der = eliminar(nodo->der, temp->dato);
+            }
+        }
+
+        if (!nodo) return nodo;
+
+        actualizarAltura(nodo);
+
+        int bal = balance(nodo);
+
+        // Rotaciones para balancear
+        if (bal > 1 && balance(nodo->izq) >= 0)
+            return rotarDerecha(nodo);
+
+        if (bal > 1 && balance(nodo->izq) < 0) {
+            nodo->izq = rotarIzquierda(nodo->izq);
+            return rotarDerecha(nodo);
+        }
+
+        if (bal < -1 && balance(nodo->der) <= 0)
+            return rotarIzquierda(nodo);
+
+        if (bal < -1 && balance(nodo->der) > 0) {
+            nodo->der = rotarDerecha(nodo->der);
+            return rotarIzquierda(nodo);
+        }
+
+        return nodo;
+    }
+
 public:
     AVL() : raiz(nullptr), cantidad(0), comp(Compare()) {}
 
@@ -115,6 +174,10 @@ public:
 
     void insertar(const T& valor) {
         raiz = insertar(raiz, valor);
+    }
+
+    void eliminar(const T& valor) {
+        raiz = eliminar(raiz, valor);
     }
 
     T* buscar(const T& valor) {

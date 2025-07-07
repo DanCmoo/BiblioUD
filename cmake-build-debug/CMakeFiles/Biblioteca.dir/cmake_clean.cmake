@@ -8,6 +8,8 @@ file(REMOVE_RECURSE
   "CMakeFiles/Biblioteca.dir/src/models/Autor.cpp.obj.d"
   "CMakeFiles/Biblioteca.dir/src/models/Edicion.cpp.obj"
   "CMakeFiles/Biblioteca.dir/src/models/Edicion.cpp.obj.d"
+  "CMakeFiles/Biblioteca.dir/src/models/Editorial.cpp.obj"
+  "CMakeFiles/Biblioteca.dir/src/models/Editorial.cpp.obj.d"
   "libBiblioteca.dll.a"
 )
 

@@ -1,0 +1,7 @@
+1|Julio|Cortázar|1|1914-08-26|Bruselas|Bélgica|París|literatura|1935|1949
+2|Pablo|Neruda|1|1904-07-12|Parral|Chile|Santiago|literatura|1920|1923
+3|Gloria|Fuentes|0|1927-07-28|Madrid|España|Madrid|literatura|1942|1945
+4|Mario|Benedetti|1|1920-09-14|Paso de los Toros|Uruguay|Montevideo|filosofía|1945|1949
+5|Alfonsina|Storni|0|1892-05-29|Sala Capriasca|Suiza|Buenos Aires|letras|1916|1918
+6|Gabriela|Mistral|0|1889-04-07|Vicuña|Chile|Santiago|educación|1904|1911
+7|Octavio|Paz|1|1914-03-31|Ciudad de México|México|Ciudad de México|literatura|1931|1933

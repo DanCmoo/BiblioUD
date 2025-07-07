@@ -1,6 +1,8 @@
 #include <iostream>
 #include <string>
 #include <ctime>
+#include <thread>
+
 #include "datastructures/AVL.h"
 #include "models/Autor.h"
 #include "models/Obra.h"
@@ -17,13 +19,11 @@ struct ComparadorAutorPorIdAutor {
 };
 
 struct ComparadorObra {
-    bool operator()(const Obra& a, const Obra& b) const {
-        if (a.getIdAutor() != b.getIdAutor())
+        bool operator()(const Obra& a, const Obra& b) const {
+            if (a.getNombre() != b.getNombre())
+                return a.getNombre() < b.getNombre();
             return a.getIdAutor() < b.getIdAutor();
-        if (a.getTipoPoesia() != b.getTipoPoesia())
-            return a.getTipoPoesia() < b.getTipoPoesia();
-        return a.getNombre() < b.getNombre();
-    }
+        }
 };
 
 // --- Estructuras globales ---
@@ -97,7 +97,7 @@ const Edicion* buscarEdicionPorNumero(int numero, const Lista<Edicion>& listaEdi
 }
 
 // Busca la editorial por su ID en la lista global
-const Editorial* buscarEditorialPorId(const std::string& id, const Lista<Editorial>& listaEditoriales) {
+const Editorial* buscarEditorialPorId(const int& id, const Lista<Editorial>& listaEditoriales) {
     for (auto it = listaEditoriales.begin(); it != listaEditoriales.end(); ++it) {
         if (it->getIdEditorial() == id)
             return &(*it);
@@ -189,6 +189,7 @@ void menuAutores() {
         std::cout << "1. Insertar autor\n";
         std::cout << "2. Buscar autor\n";
         std::cout << "3. Modificar autor\n";
+        std::cout << "4. Eliminar autor\n";
         std::cout << "0. Volver\n";
         std::cout << "Seleccione una opcion: ";
         std::cin >> op;
@@ -197,6 +198,7 @@ void menuAutores() {
             case 1: insertarAutor(); break;
             case 2: buscarAutor(); break;
             case 3: modificarAutor(); break;
+            case 4: eliminarAutor(); break;
             case 0: break;
             default: std::cout << "Opcion invalida.\n";
         }
@@ -210,6 +212,7 @@ void menuObras() {
         std::cout << "1. Insertar obra\n";
         std::cout << "2. Buscar obra\n";
         std::cout << "3. Modificar obra\n";
+        std::cout << "4. Eliminar obra\n";
         std::cout << "0. Volver\n";
         std::cout << "Seleccione una opcion: ";
         std::cin >> op;
@@ -218,6 +221,7 @@ void menuObras() {
             case 1: insertarObra(); break;
             case 2: buscarObra(); break;
             case 3: modificarObra(); break;
+            case 4: eliminarObra(); break;
             case 0: break;
             default: std::cout << "Opcion invalida.\n";
         }
@@ -231,6 +235,7 @@ void menuEdiciones() {
         std::cout << "1. Insertar edicion\n";
         std::cout << "2. Buscar edicion\n";
         std::cout << "3. Modificar edicion\n";
+        std::cout << "4. Eliminar edicion\n";
         std::cout << "0. Volver\n";
         std::cout << "Seleccione una opcion: ";
         std::cin >> op;
@@ -239,6 +244,7 @@ void menuEdiciones() {
             case 1: insertarEdicion(); break;
             case 2: buscarEdicion(); break;
             case 3: modificarEdicion(); break;
+            case 4: eliminarEdicion(); break;
             case 0: break;
             default: std::cout << "Opcion invalida.\n";
         }
@@ -286,6 +292,7 @@ void insertarAutor() {
     Autor nuevo(nombre, apellido, sexo, fechaNac, ciudadNac, paisNac, ciudadRes, formacion, anioInicio, anioPrimera);
     arbolAutores.insertar(nuevo);
     std::cout << "Autor insertado correctamente.\n";
+    guardarAutores(arbolAutores);
 
 }
 
@@ -348,6 +355,52 @@ void modificarAutor() {
     res->setAnioPrimeraObra(anioPrimera);
 
     std::cout << "Autor modificado correctamente.\n";
+    guardarAutores(arbolAutores);
+}
+void eliminarAutor() {
+    std::cout << "\n--- Eliminar Autor ---\n";
+    int id;
+    std::cout << "ID del autor a eliminar: ";
+    std::cin >> id;
+    std::cin.ignore();
+
+    Autor buscado(id);
+    Autor* autorPtr = arbolAutores.buscar(buscado);
+    if (!autorPtr) {
+        std::cout << "No existe autor con ese ID.\n";
+        return;
+    }
+
+    // Eliminar obras y ediciones asociadas
+    Lista<Obra> obrasAEliminar;
+    arbolObras.recorrerInorden([&](const Obra& obra) {
+        if (obra.getIdAutor() == id) {
+            obrasAEliminar.agregar(obra);
+        }
+    });
+
+    for (auto itObra = obrasAEliminar.begin(); itObra != obrasAEliminar.end(); ++itObra) {
+        // Eliminar ediciones asociadas a la obra
+        for (auto itEd = itObra->getIdEdiciones().begin(); itEd != itObra->getIdEdiciones().end(); ++itEd) {
+            int numEdicion = *itEd;
+            for (auto itListaEd = listaEdiciones.begin(); itListaEd != listaEdiciones.end(); ++itListaEd) {
+                if (itListaEd->getNumeroEdicion() == numEdicion) {
+                    listaEdiciones.eliminar(itListaEd);
+                    break;
+                }
+            }
+        }
+        // Eliminar la obra del árbol
+        arbolObras.eliminar(*itObra);
+    }
+
+    // Eliminar el autor
+    arbolAutores.eliminar(buscado);
+
+    std::cout << "Autor eliminado correctamente.\n";
+    guardarAutores(arbolAutores);
+    guardarObras(arbolObras);
+    guardarEdiciones(listaEdiciones);
 }
 
 
@@ -363,19 +416,22 @@ void insertarObra() {
     Obra nueva(nombre, tipoPoesia, idAutor);
     arbolObras.insertar(nueva);
     std::cout << "Obra insertada correctamente.\n";
+    guardarObras(arbolObras);
 
 }
 
 void buscarObra() {
     std::cout << "\n--- Buscar Obra ---\n";
-    int idAutor;
-    std::string nombre, tipoPoesia;
-    std::cout << "ID del Autor: "; std::cin >> idAutor; std::cin.ignore();
+    std::string nombre;
     std::cout << "Nombre de la obra: "; std::getline(std::cin, nombre);
-    std::cout << "Tipo de poesia: "; std::getline(std::cin, tipoPoesia);
-    Obra buscada(nombre, tipoPoesia, idAutor);
+    int idAutor;
+    std::cout << "ID del Autor: "; std::cin >> idAutor; std::cin.ignore();
+
+    // Como el comparador usa nombre e idAutor
+    Obra buscada(nombre, "", idAutor);
     Obra* res = arbolObras.buscar(buscada);
-    if (res) {
+
+    if (res && res->getNombre() == nombre) {
         std::cout << "Obra encontrada. ID Autor: " << res->getIdAutor()
                   << ", Nombre: " << res->getNombre()
                   << ", Tipo de poesia: " << res->getTipoPoesia() << "\n";
@@ -383,7 +439,6 @@ void buscarObra() {
         std::cout << "No existe esa obra.\n";
     }
 }
-
 void modificarObra() {
     std::cout << "\n--- Modificar Obra ---\n";
     int idAutor;
@@ -403,21 +458,73 @@ void modificarObra() {
     res->setNombre(nuevoNombre);
     res->setTipoPoesia(nuevoTipoPoesia);
     std::cout << "Obra modificada correctamente.\n";
+    guardarObras(arbolObras);
 }
+
+void eliminarObra() {
+    std::cout << "\n--- Eliminar Obra ---\n";
+    int idAutor;
+    std::string nombre;
+    std::cout << "ID del Autor: "; std::cin >> idAutor; std::cin.ignore();
+    std::cout << "Nombre de la obra: "; std::getline(std::cin, nombre);
+    Obra buscada(nombre, "", idAutor);
+    Obra* res = arbolObras.buscar(buscada);
+    if (!res) {
+        std::cout << "No existe esa obra.\n";
+        return;
+    }
+
+    // Eliminar ediciones asociadas a la obra
+    for (auto itEd = res->getIdEdiciones().begin(); itEd != res->getIdEdiciones().end(); ++itEd) {
+        int numEdicion = *itEd;
+        for (auto itListaEd = listaEdiciones.begin(); itListaEd != listaEdiciones.end(); ++itListaEd) {
+            if (itListaEd->getNumeroEdicion() == numEdicion) {
+                listaEdiciones.eliminar(itListaEd);
+                break;
+            }
+        }
+    }
+
+    // Eliminar la obra del árbol
+    arbolObras.eliminar(buscada);
+
+    std::cout << "Obra eliminada correctamente.\n";
+    guardarObras(arbolObras);
+    guardarEdiciones(listaEdiciones);
+}
+
 
 
 
 // --- CRUD de Ediciones ---
 
 void insertarEdicion() {
-    std::cout << "\n--- Insertar Ediciin ---\n";
-    std::string idEditorial, fechaPublicacion, ciudadPublicacion;
-    std::cout << "ID de la editorial: "; std::getline(std::cin, idEditorial);
-    std::cout << "Fecha de publicacion (YYYY-MM-DD): "; std::getline(std::cin, fechaPublicacion);
-    std::cout << "Ciudad de publicacion: "; std::getline(std::cin, ciudadPublicacion);
-    Edicion nueva(fechaPublicacion, idEditorial, ciudadPublicacion);
-    listaEdiciones.agregar(nueva);
-    std::cout << "Edicion insertada correctamente.\n";
+    std::cout << "\n--- Insertar Edicion ---\n";
+    std::cout << "Datos de la obra a la que pertenece la edicion:\n";
+    std::string nombre;
+    std::cout << "Nombre de la obra: "; std::getline(std::cin, nombre);
+    int idAutor;
+    std::cout << "ID del Autor: "; std::cin >> idAutor; std::cin.ignore();
+
+    // Como el comparador usa nombre e idAutor
+    Obra buscada(nombre, "", idAutor);
+    Obra* res = arbolObras.buscar(buscada);
+    if (res && res->getNombre() == nombre) {
+        std::string idEditorial, fechaPublicacion, ciudadPublicacion;
+        std::cout << "ID de la editorial: "; std::getline(std::cin, idEditorial);
+        std::cout << "Fecha de publicacion (YYYY-MM-DD): "; std::getline(std::cin, fechaPublicacion);
+        std::cout << "Ciudad de publicacion: "; std::getline(std::cin, ciudadPublicacion);
+        Edicion nueva(fechaPublicacion, std::stoi(idEditorial), ciudadPublicacion,res->getNombre(), res->getIdAutor());
+
+        listaEdiciones.agregar(nueva);
+        res->agregarIdEdicion(nueva.getNumeroEdicion());
+        std::cout << "Edicion insertada correctamente.\n";
+        guardarEdiciones(listaEdiciones);
+        guardarObras(arbolObras);
+    } else {
+        std::cout << "No existe esa obra, no se puede agregar edicion\n";
+    }
+
 }
 
 void buscarEdicion() {
@@ -443,9 +550,10 @@ void modificarEdicion() {
             std::string idEditorial, fechaPublicacion;
             std::cout << "Nuevo ID de editorial (" << it->getIdEditorial() << "): "; std::getline(std::cin, idEditorial);
             std::cout << "Nueva fecha de publicación (" << it->getFechaPublicacion() << "): "; std::getline(std::cin, fechaPublicacion);
-            it->setIdEditorial(idEditorial);
+            it->setIdEditorial(std::stoi(idEditorial));
             it->setFechaPublicacion(fechaPublicacion);
             std::cout << "Edición modificada correctamente.\n";
+            guardarEdiciones(listaEdiciones);
             return;
         }
     }
@@ -458,8 +566,14 @@ void eliminarEdicion() {
     std::cout << "Número de edición: "; std::cin >> numeroEdicion; std::cin.ignore();
     for (auto it = listaEdiciones.begin(); it != listaEdiciones.end(); ++it) {
         if (it->getNumeroEdicion() == numeroEdicion) {
+            Obra buscada(it->getNombreObra(), "", it->getIdAutor());
+            Obra* res = arbolObras.buscar(buscada);
+            res->eliminarIdEdicion(numeroEdicion);
             listaEdiciones.eliminar(it);
             std::cout << "Edición eliminada correctamente.\n";
+            guardarEdiciones(listaEdiciones);
+            guardarObras(arbolObras);
+
             return;
         }
     }
@@ -470,14 +584,14 @@ void eliminarEdicion() {
 
 void insertarEditorial() {
     std::cout << "\n--- Insertar Editorial ---\n";
-    std::string idEditorial, nombre, ciudad, pais;
-    std::cout << "ID de la editorial: "; std::getline(std::cin, idEditorial);
+    std::string  nombre, ciudad, pais;
     std::cout << "Nombre: "; std::getline(std::cin, nombre);
     std::cout << "Ciudad: "; std::getline(std::cin, ciudad);
     std::cout << "País: "; std::getline(std::cin, pais);
-    Editorial nueva(idEditorial, nombre, ciudad, pais);
+    Editorial nueva(nombre, ciudad, pais);
     listaEditoriales.agregar(nueva);
     std::cout << "Editorial insertada correctamente.\n";
+    guardarEditoriales(listaEditoriales);
 }
 
 void buscarEditorial() {
@@ -485,7 +599,7 @@ void buscarEditorial() {
     std::string idEditorial;
     std::cout << "ID de la editorial: "; std::getline(std::cin, idEditorial);
     for (auto it = listaEditoriales.begin(); it != listaEditoriales.end(); ++it) {
-        if (it->getIdEditorial() == idEditorial) {
+        if (it->getIdEditorial() == std::stoi(idEditorial)) {
             std::cout << "Nombre: " << it->getNombre()
                       << ", Ciudad: " << it->getCiudad()
                       << ", País: " << it->getPais() << "\n";
@@ -500,7 +614,7 @@ void modificarEditorial() {
     std::string idEditorial;
     std::cout << "ID de la editorial: "; std::getline(std::cin, idEditorial);
     for (auto it = listaEditoriales.begin(); it != listaEditoriales.end(); ++it) {
-        if (it->getIdEditorial() == idEditorial) {
+        if (it->getIdEditorial() == std::stoi(idEditorial)) {
             std::string nombre, ciudad, pais;
             std::cout << "Nuevo nombre (" << it->getNombre() << "): "; std::getline(std::cin, nombre);
             std::cout << "Nueva ciudad (" << it->getCiudad() << "): "; std::getline(std::cin, ciudad);
@@ -509,6 +623,7 @@ void modificarEditorial() {
             it->setCiudad(ciudad);
             it->setPais(pais);
             std::cout << "Editorial modificada correctamente.\n";
+            guardarEditoriales(listaEditoriales);
             return;
         }
     }
@@ -520,9 +635,10 @@ void eliminarEditorial() {
     std::string idEditorial;
     std::cout << "ID de la editorial: "; std::getline(std::cin, idEditorial);
     for (auto it = listaEditoriales.begin(); it != listaEditoriales.end(); ++it) {
-        if (it->getIdEditorial() == idEditorial) {
+        if (it->getIdEditorial() == std::stoi(idEditorial)) {
             listaEditoriales.eliminar(it);
             std::cout << "Editorial eliminada correctamente.\n";
+            guardarEditoriales(listaEditoriales);
             return;
         }
     }
@@ -551,7 +667,7 @@ void consulta1() {
                 int idEdicion = *idEdIt;
                 const Edicion* ed = buscarEdicionPorNumero(idEdicion, listaEdiciones);
                 if (ed) {
-                    std::string idEditorial = ed->getIdEditorial();
+                    int idEditorial = ed->getIdEditorial();
                     const Editorial* editorial = buscarEditorialPorId(idEditorial, listaEditoriales);
                     std::string nombreEditorial = editorial ? editorial->getNombre() : "Desconocida";
                     std::string fecha = ed->getFechaPublicacion();
@@ -680,7 +796,7 @@ void consulta3() {
         for (auto idEdIt = obra.getIdEdiciones().begin(); idEdIt != obra.getIdEdiciones().end(); ++idEdIt) {
             int idEdicion = *idEdIt;
             const Edicion* ed = buscarEdicionPorNumero(idEdicion, listaEdiciones);
-            if (ed && ed->getIdEditorial() == idEditorial) {
+            if (ed && ed->getIdEditorial() == std::stoi(idEditorial)) {
                 bool yaAgregado = false;
                 for (auto it = idsAutoresUnicos.begin(); it != idsAutoresUnicos.end(); ++it) {
                     if (*it == obra.getIdAutor()) {
@@ -759,7 +875,7 @@ void consulta4() {
     Lista<InfoEditorial> resultado;
 
     for (auto itEd = listaEditoriales.begin(); itEd != listaEditoriales.end(); ++itEd) {
-        std::string idEditorial = itEd->getIdEditorial();
+        int idEditorial = itEd->getIdEditorial();
         Lista<int> idsPoetas;
 
         arbolObras.recorrerInorden([&](const Obra& obra) {
@@ -786,7 +902,7 @@ void consulta4() {
             }
         });
 
-        if (idsPoetas.tamano() > n) {
+        if (idsPoetas.tamano() >= n) {
             InfoEditorial info;
             info.idEditorial = idEditorial;
             info.nombre = itEd->getNombre();
@@ -826,7 +942,7 @@ void consulta5() {
     };
 
     for (auto itEd = listaEditoriales.begin(); itEd != listaEditoriales.end(); ++itEd) {
-        std::string idEditorial = itEd->getIdEditorial();
+        int idEditorial = itEd->getIdEditorial();
         std::string nombreEditorial = itEd->getNombre();
 
         Lista<int> idsAutoresUnicos;
@@ -1020,7 +1136,7 @@ void consulta7() {
             for (auto idEdIt = obra.getIdEdiciones().begin(); idEdIt != obra.getIdEdiciones().end(); ++idEdIt) {
                 int idEdicion = *idEdIt;
                 const Edicion* ed = buscarEdicionPorNumero(idEdicion, listaEdiciones);
-                if (ed && ed->getIdEditorial() == idEditorial) {
+                if (ed && ed->getIdEditorial() == std::stoi(idEditorial)) {
                     InfoEdicion infoEd;
                     infoEd.numeroEdicion = ed->getNumeroEdicion();
                     infoEd.fechaPublicacion = ed->getFechaPublicacion();

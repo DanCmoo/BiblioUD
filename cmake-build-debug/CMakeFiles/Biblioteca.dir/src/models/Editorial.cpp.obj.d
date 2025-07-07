@@ -1,6 +1,6 @@
-CMakeFiles/Biblioteca.dir/src/models/Autor.cpp.obj: \
- C:\Users\userm\CLionProjects\BiblioUD\src\models\Autor.cpp \
- C:\Users\userm\CLionProjects\BiblioUD\src\models\Autor.h \
+CMakeFiles/Biblioteca.dir/src/models/Editorial.cpp.obj: \
+ C:\Users\userm\CLionProjects\BiblioUD\src\models\Editorial.cpp \
+ C:\Users\userm\CLionProjects\BiblioUD\src\models\Editorial.h \
  C:/Program\ Files/JetBrains/CLion\ 2025.1.1/bin/mingw/lib/gcc/x86_64-w64-mingw32/13.1.0/include/c++/string \
  C:/Program\ Files/JetBrains/CLion\ 2025.1.1/bin/mingw/lib/gcc/x86_64-w64-mingw32/13.1.0/include/c++/bits/requires_hosted.h \
  C:/Program\ Files/JetBrains/CLion\ 2025.1.1/bin/mingw/lib/gcc/x86_64-w64-mingw32/13.1.0/include/c++/x86_64-w64-mingw32/bits/c++config.h \

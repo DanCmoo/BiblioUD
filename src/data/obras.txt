@@ -1,0 +1,8 @@
+Rayuela|novela|1|1;2;3
+Bestiario|cuento|1|4;5;6
+Veinte poemas de amor|lirica|2|7;8;9
+Antología poética|lirica|3|10;11;12
+La tregua|novela|4|13;14;15
+Desolación|lirica|5|16;17;18
+El laberinto de la soledad|ensayo|6|19;20;21
+Mundo de siete pozos|lirica|7|22;23;24
